@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Métricas de Email Marketing</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vinotinto: {
+                            DEFAULT: '#581825',
+                            dark: '#3D1018',
+                            light: '#7A1C2E',
+                            accent: '#9E2A3F'
+                        },
+                        naranja: {
+                            DEFAULT: '#E05A47',
+                            bright: '#F37021',
+                            light: '#FF8A65',
+                            soft: '#FFF0ED'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+        }
+        /* Custom scrollbar for better mobile UX */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F1F1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7A1C2E;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 min-h-screen pb-12">
+
+    <!-- Encabezado -->
+    <header class="bg-gradient-to-r from-vinotinto-dark via-vinotinto to-vinotinto-light text-white shadow-lg border-b-4 border-naranja-bright">
+        <div class="max-w-4xl mx-auto px-4 py-6 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
+            <div>
+                <span class="text-xs font-semibold tracking-widest text-naranja-light uppercase block mb-1">Universidad Autónoma de Occidente &bull; Cali, Colombia</span>
+                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Métricas Email Marketing UAO</h1>
+                <p class="text-naranja-soft text-xs sm:text-sm mt-1 font-medium">Campaña: "5 cosas que te ahorrarán semanas de dudas antes de entrar a la UAO"</p>
+            </div>
+            <div class="mt-3 sm:mt-0 text-xs bg-vinotinto-dark/70 border border-naranja-bright/40 px-3 py-2 rounded-lg text-center sm:text-right">
+                <span class="block text-gray-300 text-[10px] uppercase">Moneda del Análisis</span>
+                <span class="font-bold text-naranja-light text-sm">COP (Pesos Colombianos)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-6">
+
+        <!-- Aviso de Datos Ficticios UAO -->
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm mb-6 flex items-start justify-between">
+            <div>
+                <p class="text-xs font-semibold text-amber-800 uppercase tracking-wider">Simulación de Campaña de Admisiones UAO</p>
+                <p class="text-sm text-amber-900 mt-0.5">Los datos precargados son <strong>ficticios</strong> y están basados en la campaña de Email de Registro Exitoso y Test Vocacional para aspirantes de grado 11 en Cali.</p>
+            </div>
+            <button onclick="resetDefaults()" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-3 py-1.5 rounded-md font-medium transition-colors ml-2 whitespace-nowrap">
+                Restablecer Datos
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- COLUMNA IZQUIERDA: Entradas de Datos -->
+            <section class="lg:col-span-5 bg-white p-5 rounded-xl shadow-md border border-gray-100 h-fit">
+                <div class="border-b border-gray-200 pb-3 mb-4 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-vinotinto uppercase tracking-wide">Datos de Campaña UAO</h2>
+                    <span class="text-xs text-gray-500 font-medium">Entradas</span>
+                </div>
+
+                <form id="metricsForm" class="space-y-4" onsubmit="return false;">
+                    
+                    <!-- Entregados -->
+                    <div class="bg-naranja-soft/40 p-3 rounded-lg border border-naranja/20">
+                        <label for="entregados" class="block text-xs font-bold text-vinotinto uppercase tracking-wider mb-1">
+                            Emails Entregados <span class="text-naranja-bright">*</span>
+                        </label>
+                        <input type="number" id="entregados" value="12500" min="0" placeholder="Ej. 12500"
+                            class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 font-semibold focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent transition-all">
+                        <p class="text-[11px] text-gray-500 mt-1">Total de correos confirmados en la bandeja de entrada.</p>
+                    </div>
+
+                    <!-- Métricas de Interacción UAO -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Interacción del Aspirante</h3>
+                        
+                        <div>
+                            <label for="clics" class="block text-xs font-medium text-gray-700 mb-1">Clics Totales (CCTA Test / WhatsApp)</label>
+                            <input type="number" id="clics" value="1875" min="0" placeholder="0"
+                                class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="respuestas" class="block text-xs font-medium text-gray-700 mb-1">Respuestas Directas (Asesoría)</label>
+                            <input type="number" id="respuestas" value="250" min="0" placeholder="0"
+                                class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                        </div>
+
+                        <div>
+                            <label for="conversiones" class="block text-xs font-medium text-gray-700 mb-1">Conversiones (Tests Vocacionales Completados)</label>
+                            <input type="number" id="conversiones" value="375" min="0" placeholder="0"
+                                class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- Métricas Negativas -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Desgaste y Salida</h3>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label for="bajas" class="block text-xs font-medium text-gray-700 mb-1">Bajas (Desuscripciones)</label>
+                                <input type="number" id="bajas" value="25" min="0" placeholder="0"
+                                    class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="spam" class="block text-xs font-medium text-gray-700 mb-1">Reportes de Spam</label>
+                                <input type="number" id="spam" value="5" min="0" placeholder="0"
+                                    class="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métricas Financieras UAO -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Inversión y Retorno (COP)</h3>
+
+                        <div>
+                            <label for="inversion" class="block text-xs font-medium text-gray-700 mb-1">Inversión Total Campaña (COP)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 font-medium text-sm">$</span>
+                                <input type="number" id="inversion" value="1200000" min="0" step="50000" placeholder="0"
+                                    class="w-full bg-white border border-gray-300 rounded-md pl-7 pr-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="ingresoPorConversion" class="block text-xs font-medium text-gray-700 mb-1">Ingreso Estimado por Test Completado (COP)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 font-medium text-sm">$</span>
+                                <input type="number" id="ingresoPorConversion" value="450000" min="0" step="10000" placeholder="0"
+                                    class="w-full bg-white border border-gray-300 rounded-md pl-7 pr-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-naranja focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- COLUMNA DERECHA: Resultados y Semáforos -->
+            <section class="lg:col-span-7 space-y-4">
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-100 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-vinotinto uppercase tracking-wide">Desempeño y Semáforos</h2>
+                        <p class="text-xs text-gray-500">Evaluación frente a metas para admisiones UAO</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs font-medium">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-gray-600 hidden sm:inline">Óptimo</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400"></span><span class="text-gray-600 hidden sm:inline">Aceptable</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-gray-600 hidden sm:inline">Riesgo</span>
+                    </div>
+                </div>
+
+                <!-- CARDS DE RESULTADOS -->
+                <div class="space-y-4">
+
+                    <!-- 1. CTR -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto">Tasa de Clics (CTR)</h3>
+                                <p class="text-xs text-gray-500">Aspirantes que hicieron clic en los enlaces</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100">
+                                <label for="metaCtr" class="text-[11px] font-semibold text-gray-600">Meta (%):</label>
+                                <input type="number" id="metaCtr" value="10.0" step="0.5" min="0" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2 border-y border-gray-100 my-2">
+                            <div class="flex items-center space-x-3">
+                                <div id="dotCtr" class="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                <span id="valCtr" class="text-2xl font-bold text-gray-900">--</span>
+                            </div>
+                            <span id="badgeCtr" class="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">Sin datos</span>
+                        </div>
+
+                        <p id="formulaCtr" class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded border border-gray-100">
+                            Fórmula: (Clics / Entregados) * 100
+                        </p>
+                    </div>
+
+                    <!-- 2. Tasa de Respuesta -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto">Tasa de Respuesta</h3>
+                                <p class="text-xs text-gray-500">Aspirantes que solicitaron asesoría o escribieron</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100">
+                                <label for="metaRespuesta" class="text-[11px] font-semibold text-gray-600">Meta (%):</label>
+                                <input type="number" id="metaRespuesta" value="1.5" step="0.1" min="0" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2 border-y border-gray-100 my-2">
+                            <div class="flex items-center space-x-3">
+                                <div id="dotRespuesta" class="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                <span id="valRespuesta" class="text-2xl font-bold text-gray-900">--</span>
+                            </div>
+                            <span id="badgeRespuesta" class="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">Sin datos</span>
+                        </div>
+
+                        <p id="formulaRespuesta" class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded border border-gray-100">
+                            Fórmula: (Respuestas / Entregados) * 100
+                        </p>
+                    </div>
+
+                    <!-- 3. Tasa de Conversión -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto">Tasa de Conversión (Test Completado)</h3>
+                                <p class="text-xs text-gray-500">Porcentaje que completó el Test Vocacional</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100">
+                                <label for="metaConversion" class="text-[11px] font-semibold text-gray-600">Meta (%):</label>
+                                <input type="number" id="metaConversion" value="2.0" step="0.1" min="0" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2 border-y border-gray-100 my-2">
+                            <div class="flex items-center space-x-3">
+                                <div id="dotConversion" class="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                <span id="valConversion" class="text-2xl font-bold text-gray-900">--</span>
+                            </div>
+                            <span id="badgeConversion" class="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">Sin datos</span>
+                        </div>
+
+                        <p id="formulaConversion" class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded border border-gray-100">
+                            Fórmula: (Conversiones / Entregados) * 100
+                        </p>
+                    </div>
+
+                    <!-- 4. Tasa de Bajas -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto">Tasa de Bajas (Desuscripciones)</h3>
+                                <p class="text-xs text-gray-500">Métrica de desgaste (menor o igual a la meta es mejor)</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100">
+                                <label for="metaBajas" class="text-[11px] font-semibold text-gray-600">Límite (%):</label>
+                                <input type="number" id="metaBajas" value="0.3" step="0.05" min="0" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2 border-y border-gray-100 my-2">
+                            <div class="flex items-center space-x-3">
+                                <div id="dotBajas" class="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                <span id="valBajas" class="text-2xl font-bold text-gray-900">--</span>
+                            </div>
+                            <span id="badgeBajas" class="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">Sin datos</span>
+                        </div>
+
+                        <p id="formulaBajas" class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded border border-gray-100">
+                            Fórmula: (Bajas / Entregados) * 100
+                        </p>
+                    </div>
+
+                    <!-- 5. Tasa de Spam -->
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto">Tasa de Reportes de Spam</h3>
+                                <p class="text-xs text-gray-500">Reputación del dominio UAO (menor o igual a la meta es mejor)</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100">
+                                <label for="metaSpam" class="text-[11px] font-semibold text-gray-600">Límite (%):</label>
+                                <input type="number" id="metaSpam" value="0.05" step="0.01" min="0" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between py-2 border-y border-gray-100 my-2">
+                            <div class="flex items-center space-x-3">
+                                <div id="dotSpam" class="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                <span id="valSpam" class="text-2xl font-bold text-gray-900">--</span>
+                            </div>
+                            <span id="badgeSpam" class="text-xs px-2.5 py-1 rounded-full font-medium bg-gray-100 text-gray-600">Sin datos</span>
+                        </div>
+
+                        <p id="formulaSpam" class="text-xs text-gray-500 font-mono bg-gray-50 p-2 rounded border border-gray-100">
+                            Fórmula: (Reportes de Spam / Entregados) * 100
+                        </p>
+                    </div>
+
+                    <!-- 6. Retorno de Inversión (ROI) -->
+                    <div class="bg-gradient-to-br from-white to-naranja-soft/30 rounded-xl p-5 shadow-sm border-2 border-naranja/30 transition-all hover:shadow-md">
+                        <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
+                            <div>
+                                <h3 class="font-bold text-vinotinto text-lg">Retorno de Inversión (ROI)</h3>
+                                <p class="text-xs text-gray-600">Rentabilidad financiera de la campaña UAO</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-white p-1.5 rounded-lg border border-gray-200">
+                                <label for="metaRoi" class="text-[11px] font-semibold text-gray-600">Meta (%):</label>
+                                <input type="number" id="metaRoi" value="500" step="25" class="w-16 text-center text-xs border border-gray-300 rounded px-1 py-0.5 font-semibold focus:ring-1 focus:ring-naranja focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="py-2 border-y border-naranja/20 my-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-3">
+                                    <div id="dotRoi" class="w-5 h-5 rounded-full bg-gray-300 flex-shrink-0"></div>
+                                    <span id="valRoi" class="text-3xl font-extrabold text-gray-900">--</span>
+                                </div>
+                                <span id="badgeRoi" class="text-xs px-3 py-1 rounded-full font-bold bg-gray-100 text-gray-600">Sin datos</span>
+                            </div>
+
+                            <div class="text-xs text-gray-600 grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-dashed border-gray-200">
+                                <div>Ingreso Total Estimado: <span id="valIngresoTotal" class="font-bold text-gray-800">$0 COP</span></div>
+                                <div>Retorno Neto: <span id="valGananciaNeta" class="font-bold text-gray-800">$0 COP</span></div>
+                            </div>
+                        </div>
+
+                        <p id="formulaRoi" class="text-xs text-gray-600 font-mono bg-white p-2.5 rounded border border-gray-200">
+                            Fórmula: ((Conversiones * Ingreso por Conversión) - Inversión) / Inversión * 100
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="max-w-4xl mx-auto px-4 mt-8 text-center text-xs text-gray-500 border-t border-gray-200 pt-4">
+        <p>Herramienta analítica de Email Marketing &bull; Universidad Autónoma de Occidente (UAO) &bull; Cali, Colombia</p>
+    </footer>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // Formateador de moneda COP
+        const copFormatter = new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            maximumFractionDigits: 0
+        });
+
+        // Valores por defecto basados en la simulación de la campaña UAO
+        const defaultValues = {
+            entregados: 12500,
+            clics: 1875,
+            respuestas: 250,
+            conversiones: 375,
+            bajas: 25,
+            spam: 5,
+            inversion: 1200000,
+            ingresoPorConversion: 450000,
+            metaCtr: 10.0,
+            metaRespuesta: 1.5,
+            metaConversion: 2.0,
+            metaBajas: 0.3,
+            metaSpam: 0.05,
+            metaRoi: 500
+        };
+
+        function resetDefaults() {
+            Object.keys(defaultValues).forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = defaultValues[id];
+            });
+            calcularMetricas();
+        }
+
+        function setStatus(dotId, badgeId, status, label) {
+            const dot = document.getElementById(dotId);
+            const badge = document.getElementById(badgeId);
+
+            dot.className = 'w-4 h-4 rounded-full flex-shrink-0 transition-colors ';
+            if (dotId === 'dotRoi') dot.className = 'w-5 h-5 rounded-full flex-shrink-0 transition-colors ';
+            
+            badge.className = 'text-xs px-2.5 py-1 rounded-full font-semibold transition-colors ';
+
+            if (status === 'verde') {
+                dot.classList.add('bg-emerald-500', 'shadow-sm', 'shadow-emerald-200');
+                badge.classList.add('bg-emerald-100', 'text-emerald-800');
+                badge.textContent = label || 'Óptimo';
+            } else if (status === 'amarillo') {
+                dot.classList.add('bg-amber-400', 'shadow-sm', 'shadow-amber-200');
+                badge.classList.add('bg-amber-100', 'text-amber-800');
+                badge.textContent = label || 'Aceptable';
+            } else if (status === 'rojo') {
+                dot.classList.add('bg-rose-500', 'shadow-sm', 'shadow-rose-200');
+                badge.classList.add('bg-rose-100', 'text-rose-800');
+                badge.textContent = label || 'Riesgo';
+            } else {
+                dot.classList.add('bg-gray-300');
+                badge.classList.add('bg-gray-100', 'text-gray-600');
+                badge.textContent = label || 'Requerido';
+            }
+        }
+
+        function calcularMetricas() {
+            const entregados = parseFloat(document.getElementById('entregados').value);
+            const clics = parseFloat(document.getElementById('clics').value) || 0;
+            const respuestas = parseFloat(document.getElementById('respuestas').value) || 0;
+            const conversiones = parseFloat(document.getElementById('conversiones').value) || 0;
+            const bajas = parseFloat(document.getElementById('bajas').value) || 0;
+            const spam = parseFloat(document.getElementById('spam').value) || 0;
+            const inversion = parseFloat(document.getElementById('inversion').value);
+            const ingresoPorConversion = parseFloat(document.getElementById('ingresoPorConversion').value) || 0;
+
+            // Metas
+            const metaCtr = parseFloat(document.getElementById('metaCtr').value) || 0;
+            const metaRespuesta = parseFloat(document.getElementById('metaRespuesta').value) || 0;
+            const metaConversion = parseFloat(document.getElementById('metaConversion').value) || 0;
+            const metaBajas = parseFloat(document.getElementById('metaBajas').value) || 0;
+            const metaSpam = parseFloat(document.getElementById('metaSpam').value) || 0;
+            const metaRoi = parseFloat(document.getElementById('metaRoi').value) || 0;
+
+            const tieneEntregadosValidos = !isNaN(entregados) && entregados > 0;
+            const msgAlertaEntregados = "Requiere el número de entregados";
+
+            // 1. CTR
+            const elValCtr = document.getElementById('valCtr');
+            const elFormulaCtr = document.getElementById('formulaCtr');
+            if (!tieneEntregadosValidos) {
+                elValCtr.textContent = "--";
+                elValCtr.className = "text-sm font-semibold text-rose-600";
+                setStatus('dotCtr', 'badgeCtr', 'neutral', msgAlertaEntregados);
+                elFormulaCtr.innerHTML = `Fórmula: (${clics} / Entregados) * 100 <span class="text-rose-600 block font-sans font-semibold mt-1 font-normal">${msgAlertaEntregados}</span>`;
+            } else {
+                const ctr = (clics / entregados) * 100;
+                elValCtr.textContent = ctr.toFixed(2) + "%";
+                elValCtr.className = "text-2xl font-bold text-gray-900";
+                
+                let estado = 'rojo';
+                if (ctr >= metaCtr) estado = 'verde';
+                else if (ctr >= metaCtr * 0.7) estado = 'amarillo';
+                setStatus('dotCtr', 'badgeCtr', estado, estado === 'verde' ? 'Meta alcanzada' : (estado === 'amarillo' ? 'Cerca de meta' : 'Bajo meta'));
+
+                elFormulaCtr.innerHTML = `Cálculo: (${clics.toLocaleString('es-CO')} / ${entregados.toLocaleString('es-CO')}) * 100 = <strong>${ctr.toFixed(2)}%</strong>`;
+            }
+
+            // 2. TASA DE RESPUESTA
+            const elValRespuesta = document.getElementById('valRespuesta');
+            const elFormulaRespuesta = document.getElementById('formulaRespuesta');
+            if (!tieneEntregadosValidos) {
+                elValRespuesta.textContent = "--";
+                elValRespuesta.className = "text-sm font-semibold text-rose-600";
+                setStatus('dotRespuesta', 'badgeRespuesta', 'neutral', msgAlertaEntregados);
+                elFormulaRespuesta.innerHTML = `Fórmula: (${respuestas} / Entregados) * 100 <span class="text-rose-600 block font-sans font-semibold mt-1 font-normal">${msgAlertaEntregados}</span>`;
+            } else {
+                const tasaResp = (respuestas / entregados) * 100;
+                elValRespuesta.textContent = tasaResp.toFixed(2) + "%";
+                elValRespuesta.className = "text-2xl font-bold text-gray-900";
+
+                let estado = 'rojo';
+                if (tasaResp >= metaRespuesta) estado = 'verde';
+                else if (tasaResp >= metaRespuesta * 0.7) estado = 'amarillo';
+                setStatus('dotRespuesta', 'badgeRespuesta', estado, estado === 'verde' ? 'Meta alcanzada' : (estado === 'amarillo' ? 'Cerca de meta' : 'Bajo meta'));
+
+                elFormulaRespuesta.innerHTML = `Cálculo: (${respuestas.toLocaleString('es-CO')} / ${entregados.toLocaleString('es-CO')}) * 100 = <strong>${tasaResp.toFixed(2)}%</strong>`;
+            }
+
+            // 3. TASA DE CONVERSIÓN
+            const elValConversion = document.getElementById('valConversion');
+            const elFormulaConversion = document.getElementById('formulaConversion');
+            if (!tieneEntregadosValidos) {
+                elValConversion.textContent = "--";
+                elValConversion.className = "text-sm font-semibold text-rose-600";
+                setStatus('dotConversion', 'badgeConversion', 'neutral', msgAlertaEntregados);
+                elFormulaConversion.innerHTML = `Fórmula: (${conversiones} / Entregados) * 100 <span class="text-rose-600 block font-sans font-semibold mt-1 font-normal">${msgAlertaEntregados}</span>`;
+            } else {
+                const tasaConv = (conversiones / entregados) * 100;
+                elValConversion.textContent = tasaConv.toFixed(2) + "%";
+                elValConversion.className = "text-2xl font-bold text-gray-900";
+
+                let estado = 'rojo';
+                if (tasaConv >= metaConversion) estado = 'verde';
+                else if (tasaConv >= metaConversion * 0.7) estado = 'amarillo';
+                setStatus('dotConversion', 'badgeConversion', estado, estado === 'verde' ? 'Meta alcanzada' : (estado === 'amarillo' ? 'Cerca de meta' : 'Bajo meta'));
+
+                elFormulaConversion.innerHTML = `Cálculo: (${conversiones.toLocaleString('es-CO')} / ${entregados.toLocaleString('es-CO')}) * 100 = <strong>${tasaConv.toFixed(2)}%</strong>`;
+            }
+
+            // 4. TASA DE BAJAS (Invertida: <= meta es Verde)
+            const elValBajas = document.getElementById('valBajas');
+            const elFormulaBajas = document.getElementById('formulaBajas');
+            if (!tieneEntregadosValidos) {
+                elValBajas.textContent = "--";
+                elValBajas.className = "text-sm font-semibold text-rose-600";
+                setStatus('dotBajas', 'badgeBajas', 'neutral', msgAlertaEntregados);
+                elFormulaBajas.innerHTML = `Fórmula: (${bajas} / Entregados) * 100 <span class="text-rose-600 block font-sans font-semibold mt-1 font-normal">${msgAlertaEntregados}</span>`;
+            } else {
+                const tasaBajas = (bajas / entregados) * 100;
+                elValBajas.textContent = tasaBajas.toFixed(2) + "%";
+                elValBajas.className = "text-2xl font-bold text-gray-900";
+
+                let estado = 'rojo';
+                if (tasaBajas <= metaBajas) estado = 'verde';
+                else if (tasaBajas <= metaBajas * 1.5) estado = 'amarillo';
+                setStatus('dotBajas', 'badgeBajas', estado, estado === 'verde' ? 'Bajo control' : (estado === 'amarillo' ? 'Cerca del límite' : 'Límite superado'));
+
+                elFormulaBajas.innerHTML = `Cálculo: (${bajas.toLocaleString('es-CO')} / ${entregados.toLocaleString('es-CO')}) * 100 = <strong>${tasaBajas.toFixed(2)}%</strong>`;
+            }
+
+            // 5. TASA DE SPAM (Invertida: <= meta es Verde)
+            const elValSpam = document.getElementById('valSpam');
+            const elFormulaSpam = document.getElementById('formulaSpam');
+            if (!tieneEntregadosValidos) {
+                elValSpam.textContent = "--";
+                elValSpam.className = "text-sm font-semibold text-rose-600";
+                setStatus('dotSpam', 'badgeSpam', 'neutral', msgAlertaEntregados);
+                elFormulaSpam.innerHTML = `Fórmula: (${spam} / Entregados) * 100 <span class="text-rose-600 block font-sans font-semibold mt-1 font-normal">${msgAlertaEntregados}</span>`;
+            } else {
+                const tasaSpam = (spam / entregados) * 100;
+                elValSpam.textContent = tasaSpam.toFixed(3) + "%";
+                elValSpam.className = "text-2xl font-bold text-gray-900";
+
+                let estado = 'rojo';
+                if (tasaSpam <= metaSpam) estado = 'verde';
+                else if (tasaSpam <= metaSpam * 1.5) estado = 'amarillo';
+                setStatus('dotSpam', 'badgeSpam', estado, estado === 'verde' ? 'Reputación limpia' : (estado === 'amarillo' ? 'Alerta moderada' : 'Riesgo de bloqueo'));
+
+                elFormulaSpam.innerHTML = `Cálculo: (${spam.toLocaleString('es-CO')} / ${entregados.toLocaleString('es-CO')}) * 100 = <strong>${tasaSpam.toFixed(3)}%</strong>`;
+            }
+
+            // 6. ROI
+            const elValRoi = document.getElementById('valRoi');
+            const elFormulaRoi = document.getElementById('formulaRoi');
+            const elValIngresoTotal = document.getElementById('valIngresoTotal');
+            const elValGananciaNeta = document.getElementById('valGananciaNeta');
+
+            const ingresoTotal = conversiones * ingresoPorConversion;
+            elValIngresoTotal.textContent = copFormatter.format(ingresoTotal);
+
+            if (isNaN(inversion) || inversion <= 0) {
+                elValRoi.textContent = "--";
+                elValRoi.className = "text-sm font-semibold text-rose-600";
+                elValGananciaNeta.textContent = copFormatter.format(ingresoTotal);
+                setStatus('dotRoi', 'badgeRoi', 'neutral', 'Requiere la inversión realizada');
+                elFormulaRoi.innerHTML = `Fórmula: ((Conversiones * Ingreso por Conversión) - Inversión) / Inversión * 100<br><span class="text-rose-600 font-sans font-semibold">Requiere la inversión realizada (Denominador > 0)</span>`;
+            } else {
+                const gananciaNeta = ingresoTotal - inversion;
+                const roi = (gananciaNeta / inversion) * 100;
+
+                elValGananciaNeta.textContent = copFormatter.format(gananciaNeta);
+                elValRoi.textContent = (roi >= 0 ? "+" : "") + roi.toFixed(1) + "%";
+                elValRoi.className = roi >= 0 ? "text-3xl font-extrabold text-emerald-600" : "text-3xl font-extrabold text-rose-600";
+
+                let estado = 'rojo';
+                if (roi >= metaRoi) estado = 'verde';
+                else if (roi >= 0) estado = 'amarillo';
+                setStatus('dotRoi', 'badgeRoi', estado, estado === 'verde' ? 'Excelente ROI' : (estado === 'amarillo' ? 'ROI Positivo' : 'Pérdida en campaña'));
+
+                elFormulaRoi.innerHTML = `
+                    Ingreso Total = ${conversiones.toLocaleString('es-CO')} * ${copFormatter.format(ingresoPorConversion)} = ${copFormatter.format(ingresoTotal)}<br>
+                    Cálculo ROI: ((${copFormatter.format(ingresoTotal)} - ${copFormatter.format(inversion)}) / ${copFormatter.format(inversion)}) * 100 = <strong>${roi.toFixed(1)}%</strong>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const allInputs = document.querySelectorAll('input');
+            allInputs.forEach(input => {
+                input.addEventListener('input', calcularMetricas);
+                input.addEventListener('change', calcularMetricas);
+            });
+            calcularMetricas();
+        });
+    </script>
+</body>
+</html>
